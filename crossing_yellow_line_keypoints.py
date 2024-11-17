@@ -169,32 +169,33 @@ if __name__ == '__main__':
               if not is_over and x16 is not None and y16 is not None:
                   is_over = check_crossing_yellow_line(m, q, x_v, x16, y16)
 
-              # build the bbox of the person
-              min_x = min(list_x)
-              max_x = max(list_x)
-              min_y = min(list_y)
-              max_y = max(list_y)
+              # build the bbox of the person if the lists are not empty
+              if len(list_x) > 0 and len(list_y) > 0:
+                  min_x = min(list_x)
+                  max_x = max(list_x)
+                  min_y = min(list_y)
+                  max_y = max(list_y)
 
-              w = max_x - min_x
-              h = max_y - min_y
-              dx = int(w / 3)
-              x0 = min_x - dx
-              x1 = max_x + dx
-              y0 = min_y - dx
-              y1 = max_y + dx
+                  w = max_x - min_x
+                  h = max_y - min_y
+                  dx = int(w / 3)
+                  x0 = min_x - dx
+                  x1 = max_x + dx
+                  y0 = min_y - dx
+                  y1 = max_y + dx
 
-              coords = (x0, y0 - 10)
-              text = "person"
+                  coords = (x0, y0 - 10)
+                  text = "person"
 
-              if is_over:
-                  color = (0, 0, 255)  # colors in BGR
-              else:
-                  color = (0, 255, 0)  # colors in BGR
-              thickness = 3
+                  if is_over:
+                      color = (0, 0, 255)  # colors in BGR
+                  else:
+                      color = (0, 255, 0)  # colors in BGR
+                  thickness = 3
 
-              frame = cv2.rectangle(frame, (x0, y0), (x1, y1), color, thickness)
-              frame = cv2.putText(frame, text, coords, font, 0.7, color, 2)
-              print("idx_person: {} - is_over: {}".format(idx_person, is_over))
+                  frame = cv2.rectangle(frame, (x0, y0), (x1, y1), color, thickness)
+                  frame = cv2.putText(frame, text, coords, font, 0.7, color, 2)
+                  print("idx_person: {} - is_over: {}".format(idx_person, is_over))
 
           frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
           frames_list.append(frame)
