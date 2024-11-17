@@ -163,9 +163,6 @@ if __name__ == '__main__':
           frames_list.append(frame)
           count += 1
 
-          if count == 30:
-              break
-
         else:
             # Break the loop if the end of the video is reached
             break
