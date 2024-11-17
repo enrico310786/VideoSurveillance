@@ -151,8 +151,20 @@ if __name__ == '__main__':
                   frame = cv2.rectangle(frame, (x1, y1), (x2, y2), color, thickness)
                   frame = cv2.putText(frame, text, coords, font, 0.7, color, 2)
           frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+          # resize the frame because of memory
+          # print("frame.shape: ", frame.shape) -> (1920, 1080, 3)
+          new_h = 990
+          aspect_ratio = frame.shape[1]/frame.shape[0]
+          new_w = int(aspect_ratio*new_h)
+          frame = cv2.resize(frame, (new_w, new_h))
+
+          # append the new frame
           frames_list.append(frame)
           count += 1
+
+          if count == 30:
+              break
 
         else:
             # Break the loop if the end of the video is reached
