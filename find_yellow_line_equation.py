@@ -46,7 +46,7 @@ def find_m_and_q(edges):
     return coefficient_list
 
 
-def drow_lines(image, list_coefficient):
+def draw_lines(image, list_coefficient):
     image_line = image.copy()
     h, w = image_line.shape[:2]
     for coeff in list_coefficient:
@@ -97,6 +97,6 @@ coefficient_list = find_m_and_q(edges_yellow)
 print(len(coefficient_list))
 
 # drow lines
-image_lines = drow_lines(image, coefficient_list)
+image_lines = draw_lines(image, coefficient_list)
 image_lines_path = "/home/enrico/Projects/VideoSurveillance/resources/images/image_lines.png"
 cv2.imwrite(image_lines_path, image_lines)
