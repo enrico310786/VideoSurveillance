@@ -116,7 +116,7 @@ if __name__ == '__main__':
           if count==0:
              m, q, x_v = find_yellow_line_parameter(frame)
 
-          # Run YOLO inference on the frame
+          # Run YOLO inference on the frame. Set in the predict function the interested classes to detect. Here I want to detect persons, whose index is 0
           results = model_bbox.predict(frame, classes=[0], conf=0.5, device=device) # 0 is person
           image_pred = results[0] # 0 because has been processed just one frame
           boxes = image_pred.boxes

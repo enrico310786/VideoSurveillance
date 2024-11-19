@@ -8,10 +8,12 @@ path_image = "resources/images/frame_yellow_line_900.png"
 image = cv2.imread(path_image)
 annotated_frame = image.copy()
 
+# set in the predict function the interested classes to detect. Here I want to detect persons, whose index is 0
 results = model.predict(image, classes=[0], conf=0.54)
 image_pred = results[0]
 boxes = image_pred.boxes
 
+# iter over all the detected boxes of persons
 for box in boxes:
 
     x1 = int(box.xyxy[0][0])

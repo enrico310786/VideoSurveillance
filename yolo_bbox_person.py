@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     results = model.predict(image)
 
-    # check that person has index name=0
+    # Print the dictionary of class:index. Check that person has index name=0
     print("results[0].names: ", results[0].names)
 
     # iter over results. If there is only one frame then results has only one component
