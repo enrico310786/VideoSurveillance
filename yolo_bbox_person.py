@@ -8,7 +8,7 @@ if __name__ == '__main__':
     '''
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--image_path', type=str, default="resources/images/frame_yellow_line_0.png")
+    parser.add_argument('--image_path', type=str, default="resources/images/frame_yellow_line_900.png")
 
     opt = parser.parse_args()
     image_path = opt.image_path

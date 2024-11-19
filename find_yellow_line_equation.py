@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+import argparse
 
 def find_slope(x1, y1, x2, y2):
     if x2 != x1:
@@ -61,42 +61,55 @@ def draw_lines(image, list_coefficient):
         cv2.line(image_line, (int(x0), int(y0)), (int(x1), int(y1)), (0, 255, 0), 6)
     return image_line
 
-###########################################################################
-###########################################################################
 
-# Load the image
-frame_path = '/home/enrico/Projects/VideoSurveillance/resources/images/frame_yellow_line.png'
-image = cv2.imread(frame_path)
+if __name__ == '__main__':
+    '''
+    Extract the first frame of a video
+    '''
 
-# Set the min and max yellow in the HSV space
-yellow_light=np.array([20,140,200],np.uint8)
-yellow_dark=np.array([35,255,255],np.uint8)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--frame_path', type=str, default="resources/images/frame_yellow_line.png")
+    parser.add_argument('--frame_hsv_path', type=str, default="resources/images/hsv.png")
+    parser.add_argument('--mask_yellow_path', type=str, default="resources/images/mask_yellow.png")
+    parser.add_argument('--edges_yellow_path', type=str, default="resources/images/edges_yellow.png")
+    parser.add_argument('--image_lines_path', type=str, default="resources/images/image_lines.png")
 
-# transform the frame to hsv color space
-frame_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-frame_hsv_path = "/home/enrico/Projects/VideoSurveillance/resources/images/hsv.png"
-cv2.imwrite(frame_hsv_path, frame_hsv)
 
-# isolate the yellow line
-mask_yellow=cv2.inRange(frame_hsv,yellow_light,yellow_dark)
-kernel=np.ones((4,4),"uint8")
-# Moprphological closure to fill the black spots in white regions
-mask_yellow = cv2.morphologyEx(mask_yellow, cv2.MORPH_CLOSE, kernel)
-# Moprphological opening to fill the white spots in black regions
-mask_yellow = cv2.morphologyEx(mask_yellow, cv2.MORPH_OPEN, kernel)
-mask_yellow_path = "/home/enrico/Projects/VideoSurveillance/resources/images/mask_yellow.png"
-cv2.imwrite(mask_yellow_path, mask_yellow)
+    opt = parser.parse_args()
+    frame_path = opt.frame_path
+    frame_hsv_path = opt.frame_hsv_path
+    mask_yellow_path = opt.mask_yellow_path
+    edges_yellow_path = opt.edges_yellow_path
+    image_lines_path = opt.image_lines_path
 
-# find the edge of isolate yellow line
-edges_yellow = cv2.Canny(mask_yellow,50,150)
-edges_yellow_path = "/home/enrico/Projects/VideoSurveillance/resources/images/edges_yellow.png"
-cv2.imwrite(edges_yellow_path, edges_yellow)
+    # Load the image
+    image = cv2.imread(frame_path)
 
-# find slope and intercept of yellow line
-coefficient_list = find_m_and_q(edges_yellow)
-print(len(coefficient_list))
+    # Set the min and max yellow in the HSV space
+    yellow_light=np.array([20,140,200],np.uint8)
+    yellow_dark=np.array([35,255,255],np.uint8)
 
-# drow lines
-image_lines = draw_lines(image, coefficient_list)
-image_lines_path = "/home/enrico/Projects/VideoSurveillance/resources/images/image_lines.png"
-cv2.imwrite(image_lines_path, image_lines)
+    # transform the frame to hsv color space
+    frame_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    cv2.imwrite(frame_hsv_path, frame_hsv)
+
+    # isolate the yellow line
+    mask_yellow=cv2.inRange(frame_hsv,yellow_light,yellow_dark)
+    kernel=np.ones((4,4),"uint8")
+    # Moprphological closure to fill the black spots in white regions
+    mask_yellow = cv2.morphologyEx(mask_yellow, cv2.MORPH_CLOSE, kernel)
+    # Moprphological opening to fill the white spots in black regions
+    mask_yellow = cv2.morphologyEx(mask_yellow, cv2.MORPH_OPEN, kernel)
+    cv2.imwrite(mask_yellow_path, mask_yellow)
+
+    # find the edge of isolate yellow line
+    edges_yellow = cv2.Canny(mask_yellow,50,150)
+    cv2.imwrite(edges_yellow_path, edges_yellow)
+
+    # find slope and intercept of yellow line
+    coefficient_list = find_m_and_q(edges_yellow)
+    print(len(coefficient_list))
+
+    # drow lines
+    image_lines = draw_lines(image, coefficient_list)
+    cv2.imwrite(image_lines_path, image_lines)
