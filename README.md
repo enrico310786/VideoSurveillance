@@ -9,6 +9,10 @@ The control is carried out using different technologies such as:
 - YOLO11 for the person detection
 - Hough transform for the yellow line detection and the determination of the corresponding straight line equation
 
+On this task I write the medium story at this link. Here you can find deeper informations
+
+https://medium.com/@enrico.randellini/smart-video-surveillance-using-yolo11-and-hough-transform-to-track-yellow-line-crossings-at-aa9863e282ab
+
 ## Installation
 
 Build the environment based on python3.10
